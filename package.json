@@ -1,0 +1,21 @@
+{
+  "name": "otto_journal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start-client": "cd client; npm start;",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryandjones14/otto_journal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryandjones14/otto_journal/issues"
+  },
+  "homepage": "https://github.com/ryandjones14/otto_journal#readme"
+}
