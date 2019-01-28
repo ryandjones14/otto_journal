@@ -14,6 +14,7 @@ const initialTasks = [
     task: 'take out trash',
   },
 ];
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -23,14 +24,28 @@ class App extends Component {
 
     // This binding is necessary to make `this` work in the callback
     // this.handleChange = this.handleChange.bind(this);
-    // this.addTodo = this.addTodo.bind(this);
+    this.addTodoItem = this.addTodoItem.bind(this);
+  }
+
+  addTodoItem(newItem) {
+    const newId = this.state.tasks.length;
+    let newTask = {
+      id: newId,
+      task: newItem
+    };
+    let items = this.state.tasks.concat(newTask);
+    console.log('new items list', items);
+    this.setState({
+      tasks: items
+    });
+    console.log('new state', this.state);    
   }
 
   render() {
     return (
       <div>
-        <AddTodo placeholder='ryan'/>
-        <TaskList tasks={initialTasks} />
+        <AddTodo placeholder='wut u gon do 2day?' addTodoItem={this.addTodoItem}/>
+        <TaskList tasks={this.state.tasks} />
       </div>
     );
   }
@@ -56,8 +71,14 @@ class AddTodo extends Component {
       value: newValue
     }));
   }
-  addTodo(e) {
+  addTodo() {
     console.log('value', this.state.value);
+    const newTask = this.state.value;
+    if (newTask === '') return;
+    this.props.addTodoItem(newTask);
+    this.setState(state => ({
+      value: ''
+    }));
   }
   render() {
     return (
