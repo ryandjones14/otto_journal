@@ -1,31 +1,36 @@
 import React, { Component } from 'react';
 
-const initialTasks = [
-  {
-    id: 0,
-    task: 'clean dishes',
-  },
-  {
-    id: 1,
-    task: 'wash car',
-  },
-  {
-    id: 2,
-    task: 'take out trash',
-  },
-];
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: initialTasks,
+      tasks: [],
     };
 
     // This binding is necessary to make `this` work in the callback
     // this.handleChange = this.handleChange.bind(this);
     this.addTodoItem = this.addTodoItem.bind(this);
+    this.getTasks = this.getTasks.bind(this);
   }
+
+  componentDidMount() {
+    const tasks = this.getTasks();
+    if (tasks) {
+      this.setState(state => ({
+        tasks: tasks
+      }));
+    }
+  }
+
+  // our first get method that uses our backend api to 
+  // fetch data from our data base
+  getTasks = () => {
+    fetch("http://localhost:3001/api/tasks", {
+      crossDomain: true
+    })
+      .then(data => data.json())
+      .then(res => this.setState({ tasks: res.data }));
+  };
 
   addTodoItem(newItem) {
     const newId = this.state.tasks.length;
@@ -34,11 +39,9 @@ class App extends Component {
       task: newItem
     };
     let items = this.state.tasks.concat(newTask);
-    console.log('new items list', items);
     this.setState({
       tasks: items
     });
-    console.log('new state', this.state);    
   }
 
   render() {
@@ -65,14 +68,12 @@ class AddTodo extends Component {
   }
 
   handleChange(e) {
-    console.log(e.target.value);
     const newValue = e.target.value;
     this.setState(state => ({
       value: newValue
     }));
   }
   addTodo() {
-    console.log('value', this.state.value);
     const newTask = this.state.value;
     if (newTask === '') return;
     this.props.addTodoItem(newTask);
@@ -82,13 +83,6 @@ class AddTodo extends Component {
   }
   render() {
     return (
-      // <form onSubmit={this.addTodo}>
-      //   <label>
-      //     Name:
-      //     <input type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange} />
-      //   </label>
-      //   <input type="submit" value="Submit" />
-      // </form>
       <div>
         <input type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange}/>
         <button onClick={this.addTodo}>add</button>
@@ -99,11 +93,9 @@ class AddTodo extends Component {
 
 function TaskList(props) {
   const items = props.tasks;
-  console.log('items 1', items);
   const listItems = items.map((item) => {
-    console.log('items 2', item.task);    
     return (
-      <li key={item.id}>
+      <li key={item.id} className="task">
         <Todo task={item.task} />
       </li>
     );

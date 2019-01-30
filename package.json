@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ryandjones14/otto_journal/issues"
   },
-  "homepage": "https://github.com/ryandjones14/otto_journal#readme"
+  "homepage": "https://github.com/ryandjones14/otto_journal#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
 }
