@@ -4,7 +4,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [],
+      todos: [],
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -14,12 +14,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const tasks = this.getTasks();
-    if (tasks) {
-      this.setState(state => ({
-        tasks: tasks
-      }));
-    }
+    this.getTasks();
+    // if (todos) {
+    //   this.setState(state => ({
+    //     todos: todos
+    //   }));
+    // }
   }
 
   // our first get method that uses our backend api to 
@@ -29,26 +29,26 @@ class App extends Component {
       crossDomain: true
     })
       .then(data => data.json())
-      .then(res => this.setState({ tasks: res.data }));
+      .then(res => this.setState({ todos: res.data }));
   };
 
-  addTodoItem(newItem) {
-    const newId = this.state.tasks.length;
-    let newTask = {
-      id: newId,
-      task: newItem
-    };
-    let items = this.state.tasks.concat(newTask);
-    this.setState({
-      tasks: items
-    });
+  addTodoItem(newTodo) {
+    // const newId = this.state.tasks.length;
+    // let newTask = {
+    //   id: newId,
+    //   task: newItem
+    // };
+    // let items = this.state.tasks.concat(newTask);
+    // this.setState({
+    //   tasks: items
+    // });
   }
 
   render() {
     return (
       <div>
         <AddTodo placeholder='wut u gon do 2day?' addTodoItem={this.addTodoItem}/>
-        <TaskList tasks={this.state.tasks} />
+        <TaskList todos={this.state.todos} />
       </div>
     );
   }
@@ -74,9 +74,9 @@ class AddTodo extends Component {
     }));
   }
   addTodo() {
-    const newTask = this.state.value;
-    if (newTask === '') return;
-    this.props.addTodoItem(newTask);
+    const newTodo = this.state.value;
+    if (newTodo === '') return;
+    this.props.addTodoItem(newTodo);
     this.setState(state => ({
       value: ''
     }));
@@ -92,33 +92,31 @@ class AddTodo extends Component {
 }
 
 function TaskList(props) {
-  const items = props.tasks;
-  const listItems = items.map((item) => {
+  const todos = props.todos;
+  const listTodos = todos.map((todo) => {
     return (
-      <li key={item.id} className="task">
-        <Todo task={item.task} />
+      <li key={todo.id} className="task">
+        <Todo task={todo.task} />
       </li>
     );
   });
 
   return (
-    <ul>{listItems}</ul>
+    <ul>{listTodos}</ul>
   );
 }
 
-class Todo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { task: props.task };
-  }
+function Todo(props) {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { task: props.task };
+  // }
 
-  render() {
     return (
       <div>
-        <input type="checkbox"/>{this.state.task}
+        <input type="checkbox"/>{props.task}
       </div>
     )
-  }
 }
 
 export default App;
