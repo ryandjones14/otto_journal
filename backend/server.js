@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
-const Task = require("./models/tasks");
+const Todo = require("./models/todos");
 const cors = require('cors');
 
 const API_PORT = 3001;
@@ -36,8 +36,8 @@ router.use(cors());
 
 // this is our get method
 // this method fetches all available data in our database
-router.get("/tasks", (req, res) => {
-  Task.find((err, data) => {
+router.get("/todos", (req, res) => {
+  Todo.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
@@ -55,34 +55,34 @@ router.get("/tasks", (req, res) => {
 
 // // this is our delete method
 // // this method removes existing data in our database
-// router.delete("/deleteData", (req, res) => {
-//   const { id } = req.body;
-//   Data.findOneAndDelete(id, err => {
-//     if (err) return res.send(err);
-//     return res.json({ success: true });
-//   });
-// });
+router.delete("/deleteTodo", (req, res) => {
+  const { id } = req.body;
+  Todo.findOneAndDelete(id, err => {
+    if (err) return res.send(err);
+    return res.json({ success: true });
+  });
+});
 
 // // this is our create methid
 // // this method adds new data in our database
-// router.post("/putData", (req, res) => {
-//   let data = new Data();
+router.post("/addTodo", (req, res) => {
+  let todo = new Todo();
 
-//   const { id, message } = req.body;
+  const { task } = req.body;
 
-//   if ((!id && id !== 0) || !message) {
-//     return res.json({
-//       success: false,
-//       error: "INVALID INPUTS"
-//     });
-//   }
-//   data.message = message;
-//   data.id = id;
-//   data.save(err => {
-//     if (err) return res.json({ success: false, error: err });
-//     return res.json({ success: true });
-//   });
-// });
+  // if ((!id && id !== 0) || !message) {
+  //   return res.json({
+  //     success: false,
+  //     error: "INVALID INPUTS"
+  //   });
+  // }
+  todo.task = task;
+  // todo.id = id;  
+  todo.save(err => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
 
 // append /api for our http requests
 app.use("/api", router);

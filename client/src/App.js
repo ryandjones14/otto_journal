@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
+const url = 'http://localhost:3001/api';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -9,46 +11,62 @@ class App extends Component {
 
     // This binding is necessary to make `this` work in the callback
     // this.handleChange = this.handleChange.bind(this);
-    this.addTodoItem = this.addTodoItem.bind(this);
+    this.addNewTodo = this.addNewTodo.bind(this);
     this.getTasks = this.getTasks.bind(this);
   }
 
   componentDidMount() {
     this.getTasks();
-    // if (todos) {
-    //   this.setState(state => ({
-    //     todos: todos
-    //   }));
-    // }
   }
 
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getTasks = () => {
-    fetch("http://localhost:3001/api/tasks", {
+    fetch("http://localhost:3001/api/todos", {
       crossDomain: true
     })
       .then(data => data.json())
       .then(res => this.setState({ todos: res.data }));
   };
 
-  addTodoItem(newTodo) {
-    // const newId = this.state.tasks.length;
-    // let newTask = {
-    //   id: newId,
-    //   task: newItem
-    // };
-    // let items = this.state.tasks.concat(newTask);
-    // this.setState({
-    //   tasks: items
-    // });
+  addNewTodo(newTask) {
+    const newId = this.state.todos.length;
+    let newTodo = {
+      id: newId,
+      task: newTask
+    };
+    this.postTodo(newTodo)
   }
+
+  postTodo = newTodo => {
+    console.log('newTodo1', newTodo, this);
+    axios.post(`${url}/addTodo`, newTodo).then(() => {
+      this.getTasks();
+    });
+  }
+
+  deleteTodo = idTodelete => {
+    console.log(idTodelete);
+    let objIdToDelete = null;
+    this.state.todos.forEach(todo => {
+      if (todo.id === idTodelete) {
+        objIdToDelete = todo.id;
+      }
+    });
+
+    axios.delete("http://localhost:3001/api/deleteTodo", {
+      data: {
+        id: objIdToDelete
+      }
+    });
+  };
+  
 
   render() {
     return (
       <div>
-        <AddTodo placeholder='wut u gon do 2day?' addTodoItem={this.addTodoItem}/>
-        <TaskList todos={this.state.todos} />
+        <AddTodo placeholder='wut u gon do 2day?' addNewTodo={this.addNewTodo}/>
+        <TaskList todos={this.state.todos} deleteTodo={this.deleteTodo}/>
       </div>
     );
   }
@@ -74,9 +92,9 @@ class AddTodo extends Component {
     }));
   }
   addTodo() {
-    const newTodo = this.state.value;
-    if (newTodo === '') return;
-    this.props.addTodoItem(newTodo);
+    const newTask = this.state.value;
+    if (newTask === '') return;
+    this.props.addNewTodo(newTask);
     this.setState(state => ({
       value: ''
     }));
@@ -92,26 +110,24 @@ class AddTodo extends Component {
 }
 
 function TaskList(props) {
-  const todos = props.todos;
-  const listTodos = todos.map((todo) => {
+  console.log('props', props.todos);
+  function deleteTodo() {
+    props.deleteTodo();
+  };
+  const listTodos = props.todos.map((todo, i) => {
     return (
-      <li key={todo.id} className="task">
+      <li key={todo._id} className="task">
         <Todo task={todo.task} />
+        <button onClick={deleteTodo}>X</button>
       </li>
     );
   });
-
   return (
     <ul>{listTodos}</ul>
   );
 }
 
 function Todo(props) {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { task: props.task };
-  // }
-
     return (
       <div>
         <input type="checkbox"/>{props.task}
