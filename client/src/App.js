@@ -33,31 +33,31 @@ class App extends Component {
     const newId = this.state.todos.length;
     let newTodo = {
       id: newId,
-      task: newTask
+      task: newTask,
+      isComplete: false
     };
     this.postTodo(newTodo)
   }
 
   postTodo = newTodo => {
-    console.log('newTodo1', newTodo, this);
     axios.post(`${url}/addTodo`, newTodo).then(() => {
       this.getTasks();
     });
   }
 
   deleteTodo = idTodelete => {
-    console.log(idTodelete);
     let objIdToDelete = null;
     this.state.todos.forEach(todo => {
       if (todo.id === idTodelete) {
-        objIdToDelete = todo.id;
+        objIdToDelete = todo._id;
       }
     });
-
     axios.delete("http://localhost:3001/api/deleteTodo", {
       data: {
         id: objIdToDelete
       }
+    }).then(() => {
+      this.getTasks();
     });
   };
   
@@ -110,15 +110,14 @@ class AddTodo extends Component {
 }
 
 function TaskList(props) {
-  console.log('props', props.todos);
-  function deleteTodo() {
-    props.deleteTodo();
+  function deleteTodo(idTodelete) {
+    props.deleteTodo(idTodelete);
   };
   const listTodos = props.todos.map((todo, i) => {
     return (
-      <li key={todo._id} className="task">
-        <Todo task={todo.task} />
-        <button onClick={deleteTodo}>X</button>
+      <li key={todo.id} className="task">
+        <Todo task={todo.task} isComplete={todo.isComplete}/>
+        <button onClick={() => deleteTodo(todo.id)}>X</button>
       </li>
     );
   });
@@ -130,7 +129,7 @@ function TaskList(props) {
 function Todo(props) {
     return (
       <div>
-        <input type="checkbox"/>{props.task}
+        <input type="checkbox"/><p className={props.isComplete ? 'complete' : 'incomplete'}>{props.task}</p>
       </div>
     )
 }

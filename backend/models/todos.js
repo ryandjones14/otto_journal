@@ -5,6 +5,7 @@ const TodoSchema = new Schema(
   {
     id: Number,
     task: String,
+    isComplete: Boolean
   },
   { timestamps: true }
 );

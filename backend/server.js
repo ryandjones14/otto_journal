@@ -57,7 +57,7 @@ router.get("/todos", (req, res) => {
 // // this method removes existing data in our database
 router.delete("/deleteTodo", (req, res) => {
   const { id } = req.body;
-  Todo.findOneAndDelete(id, err => {
+  Todo.findByIdAndDelete(id, err => {
     if (err) return res.send(err);
     return res.json({ success: true });
   });
