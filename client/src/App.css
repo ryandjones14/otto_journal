@@ -1,0 +1,36 @@
+.add-todo {
+  padding: 0 25% 20px 25%;
+}
+.task-list {
+  list-style: none;
+  width: 50%;
+  padding: 0 25%;
+}
+
+.task {
+  display: grid;
+  grid-template: repeat(3, 1fr) / inherit;
+  grid-gap: 10px 10px;
+}
+
+.task > input {
+  grid-column: 1;
+  grid-row: 1;  
+}
+
+.task > p {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0px;
+}
+
+.task > button {
+  grid-column: 3;
+  grid-row: 1;
+  width: 25%;
+}
+
+.complete {
+  text-decoration: line-through;
+  color: rgba(222, 222, 222, 1);
+}

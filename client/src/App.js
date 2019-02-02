@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const url = 'http://localhost:3001/api';
 class App extends Component {
@@ -45,10 +46,10 @@ class App extends Component {
     });
   }
 
-  deleteTodo = idTodelete => {
+  deleteTodo = idToDelete => {
     let objIdToDelete = null;
     this.state.todos.forEach(todo => {
-      if (todo.id === idTodelete) {
+      if (todo._id === idToDelete) {
         objIdToDelete = todo._id;
       }
     });
@@ -61,12 +62,29 @@ class App extends Component {
     });
   };
   
+  completeTodo = (idToUpdate, updateToApply) => {
+    let objIdToUpdate = null;
+    let status = null;
+    this.state.todos.forEach(todo => {
+      if (todo._id === idToUpdate) {
+        objIdToUpdate = todo._id;
+        status = !todo.isComplete;
+      }
+    });
+
+    axios.post("http://localhost:3001/api/updateTodo", {
+      id: objIdToUpdate,
+      update: { isComplete: status }
+    }).then(() => {
+      this.getTasks();
+    });
+  };
 
   render() {
     return (
       <div>
         <AddTodo placeholder='wut u gon do 2day?' addNewTodo={this.addNewTodo}/>
-        <TaskList todos={this.state.todos} deleteTodo={this.deleteTodo}/>
+        <TaskList todos={this.state.todos} deleteTodo={this.deleteTodo} completeTodo={this.completeTodo}/>
       </div>
     );
   }
@@ -101,7 +119,7 @@ class AddTodo extends Component {
   }
   render() {
     return (
-      <div>
+      <div className='add-todo'>
         <input type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange}/>
         <button onClick={this.addTodo}>add</button>
       </div>
@@ -110,14 +128,15 @@ class AddTodo extends Component {
 }
 
 function TaskList(props) {
-  function deleteTodo(idTodelete) {
-    props.deleteTodo(idTodelete);
-  };
   const listTodos = props.todos.map((todo, i) => {
     return (
-      <li key={todo.id} className="task">
-        <Todo task={todo.task} isComplete={todo.isComplete}/>
-        <button onClick={() => deleteTodo(todo.id)}>X</button>
+      <li key={todo._id} className='task-list'>
+        <Todo
+          task={todo.task}
+          id={todo._id}
+          isComplete={todo.isComplete}
+          deleteTodo={props.deleteTodo}
+          completeTodo={props.completeTodo}/>
       </li>
     );
   });
@@ -127,11 +146,24 @@ function TaskList(props) {
 }
 
 function Todo(props) {
-    return (
-      <div>
-        <input type="checkbox"/><p className={props.isComplete ? 'complete' : 'incomplete'}>{props.task}</p>
-      </div>
-    )
+  function deleteTodo(idToDelete) {
+    props.deleteTodo(idToDelete);
+  };
+  function completeTodo(idToUpdate) {
+    props.completeTodo(idToUpdate);
+  };
+  return (
+    <div className='task'>
+      <input
+        type="checkbox"
+        onChange={() => completeTodo(props.id)}
+        checked={props.isComplete}/>
+      <p className={props.isComplete ? 'complete' : 'incomplete'}>
+        {props.task}
+      </p>
+      <button onClick={() => deleteTodo(props.id)}>X</button>
+    </div>
+  )
 }
 
 export default App;
