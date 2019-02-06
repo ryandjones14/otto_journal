@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
+import './fontello/css/fontello.css';
 
 const url = 'http://localhost:3001/api';
 class App extends Component {
@@ -31,16 +32,10 @@ class App extends Component {
   };
 
   addNewTodo(newTask) {
-    const newId = this.state.todos.length;
     let newTodo = {
-      id: newId,
       task: newTask,
       isComplete: false
     };
-    this.postTodo(newTodo)
-  }
-
-  postTodo = newTodo => {
     axios.post(`${url}/addTodo`, newTodo).then(() => {
       this.getTasks();
     });
@@ -58,7 +53,12 @@ class App extends Component {
         id: objIdToDelete
       }
     }).then(() => {
-      this.getTasks();
+      const todos = this.state.todos;
+      const todoIndex = todos.findIndex(todo => {
+        return todo._id === idToDelete;
+      });
+      todos.splice(todoIndex, 1);
+      this.setState({ todos: todos });
     });
   };
   
@@ -76,7 +76,13 @@ class App extends Component {
       id: objIdToUpdate,
       update: { isComplete: status }
     }).then(() => {
-      this.getTasks();
+      const todos = this.state.todos;
+      const todoIndex = todos.findIndex(todo => {
+        return todo._id === idToUpdate;
+      });
+      const newStatus = !todos[todoIndex].isComplete;
+      todos[todoIndex].isComplete = newStatus;
+      this.setState({ todos: todos });
     });
   };
 
@@ -120,8 +126,8 @@ class AddTodo extends Component {
   render() {
     return (
       <div className='add-todo'>
-        <input type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange}/>
-        <button onClick={this.addTodo}>add</button>
+        <input className='add-todo-input' type='text' placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange}/>
+        <button className='add-todo-btn icon-plus' onClick={this.addTodo}></button>
       </div>
     );
   }
@@ -130,7 +136,7 @@ class AddTodo extends Component {
 function TaskList(props) {
   const listTodos = props.todos.map((todo, i) => {
     return (
-      <li key={todo._id} className='task-list'>
+      <li key={todo._id}>
         <Todo
           task={todo.task}
           id={todo._id}
@@ -141,7 +147,7 @@ function TaskList(props) {
     );
   });
   return (
-    <ul>{listTodos}</ul>
+    <ul className='todo-list'>{listTodos}</ul>
   );
 }
 
@@ -152,16 +158,23 @@ function Todo(props) {
   function completeTodo(idToUpdate) {
     props.completeTodo(idToUpdate);
   };
+  const todoStatus = props.isComplete ? 'complete icon-emo-thumbsup' : 'incomplete';
+  const doneBtnClasses = props.isComplete ? 'done icon-check' : 'done icon-check-empty';
+
+  const deleteBtnClasses = 'delete icon-trash-empty';
   return (
-    <div className='task'>
-      <input
-        type="checkbox"
-        onChange={() => completeTodo(props.id)}
-        checked={props.isComplete}/>
-      <p className={props.isComplete ? 'complete' : 'incomplete'}>
+    <div className='todo'>
+      <p className={todoStatus}>
         {props.task}
       </p>
-      <button onClick={() => deleteTodo(props.id)}>X</button>
+      <button
+        className={doneBtnClasses}
+        onClick={() => completeTodo(props.id)}>
+      </button>
+      <button
+        className={deleteBtnClasses}
+        onClick={() => deleteTodo(props.id)}>
+      </button>
     </div>
   )
 }

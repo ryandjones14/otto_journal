@@ -68,15 +68,8 @@ router.delete("/deleteTodo", (req, res) => {
 router.post("/addTodo", (req, res) => {
   let todo = new Todo();
 
-  const { id, task, isComplete } = req.body;
+  const { task, isComplete } = req.body;
 
-  if ((!id && id !== 0) || !task) {
-    return res.json({
-      success: false,
-      error: "INVALID INPUTS"
-    });
-  }
-  todo.id = id;
   todo.task = task;
   todo.isComplete = isComplete;
 

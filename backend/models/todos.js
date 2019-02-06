@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const TodoSchema = new Schema(
   {
-    id: Number,
     task: String,
     isComplete: Boolean
   },

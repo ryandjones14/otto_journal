@@ -1,36 +1,61 @@
+html, body {
+  background-color: rgb(240, 240, 240);
+}
 .add-todo {
-  padding: 0 25% 20px 25%;
+  padding: 0 5% 20px 5%;
+  background: darkgreen;
+  border: 1px solid black;
+  /* border-radius: 5px;   */
+  box-shadow: 2px 2px 0px darkgrey;
 }
-.task-list {
+.add-todo-input {
+  min-width: 80%;
+  margin: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;  
+  /* box-shadow: 1px 1px 0px darkgrey; */
+}
+  .add-todo-btn {
+    border: 1px solid black;
+    border-radius: 5px;    
+    background: rgb(200, 200, 200);
+  }
+.todo-list {
   list-style: none;
-  width: 50%;
-  padding: 0 25%;
+  max-width: 65%;
+  font-size: 16px;
+  color: rgb(0, 41, 0);
 }
 
-.task {
-  display: grid;
-  grid-template: repeat(3, 1fr) / inherit;
-  grid-gap: 10px 10px;
+.todo {
+  display: flex;
+  flex-direction: row;
+  padding: 3px 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 1px 1px 0px darkgrey;
+  margin: 10px 0;  
+  height: 40px;
+  background: rgb(230, 230, 230);
 }
 
-.task > input {
-  grid-column: 1;
-  grid-row: 1;  
-}
-
-.task > p {
-  grid-column: 2;
-  grid-row: 1;
+.todo > p {
+  flex: 1;
   margin: 0px;
 }
 
-.task > button {
-  grid-column: 3;
-  grid-row: 1;
-  width: 25%;
+.icon-emo-thumbsup {
+  margin-right: 15px;
+}
+
+.todo > button {
+  width: 30px;
+  min-height: 30px;
+  margin: 1px;
+  border: none;
+  background: none;
 }
 
 .complete {
-  text-decoration: line-through;
-  color: rgba(222, 222, 222, 1);
+  color: rgba(175, 175, 175, 1);
 }
