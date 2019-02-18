@@ -20,7 +20,8 @@ class AddTodo extends Component {
       value: newValue
     }));
   }
-  addTodo() {
+  addTodo(e) {
+    e.preventDefault();
     const newTask = this.state.value;
     if (newTask === '') return;
     this.props.addNewTodo(newTask);
@@ -30,12 +31,12 @@ class AddTodo extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="add-todo">
         <h1 className="title">otto</h1>
-        <div className="add-todo">
+        <form className="add-todo-form">
           <input className="add-todo-input" type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange} />
-          <button className="add-todo-btn icon-plus" onClick={this.addTodo}></button>
-        </div>
+          <button type="submit" className="add-todo-btn icon-plus" onClick={this.addTodo}></button>
+        </form>
       </div>
     );
   }

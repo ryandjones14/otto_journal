@@ -1,26 +1,50 @@
 .add-todo {
-  padding: 0 5% 20px 5%;
+  padding: 0 5% 10px 5%;
   background: darkgreen;
   border: 1px solid black;
   /* border-radius: 5px;   */
   box-shadow: 2px 2px 0px darkgrey;
+  display: flex;
+  flex-direction: row;
 }
-.add-todo-input {
-  min-width: 80%;
-  margin: 5px 10px;
-  border: 1px solid black;
-  border-radius: 5px;  
-  /* box-shadow: 1px 1px 0px darkgrey; */
-}
-  .add-todo-btn {
-    border: 1px solid black;
-    border-radius: 5px;    
-    background: rgb(200, 200, 200);
-  }
 
 .title {
   background: darkgreen;
   margin: 0;
   padding: 10px;
   color: rgb(240, 240, 240);
+  flex: 1;
+}
+
+.add-todo-form {
+  flex: 3;
+  padding: 10px;
+  font-size: 18px;
+}
+
+  .add-todo-input {
+    min-width: 80%;
+    margin: 5px 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    flex: 2;
+    height: 35px;
+  }
+
+  .add-todo-btn {
+    border: 1px solid black;
+    border-radius: 5px;    
+    background: rgb(200, 200, 200);
+    height: 35px;
+    flex: 1; 
+  }
+
+@media screen and (max-width: 768px) {
+  .add-todo-form {
+    font-size: 12px;
+  }
+  .add-todo-input {
+    min-width: 50%;
+    max-width: 70%;
+  }
 }
