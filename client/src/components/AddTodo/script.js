@@ -31,7 +31,7 @@ class AddTodo extends Component {
   render() {
     return (
       <div>
-        <h1 class="title">otto</h1>
+        <h1 className="title">otto</h1>
         <div className="add-todo">
           <input className="add-todo-input" type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange} />
           <button className="add-todo-btn icon-plus" onClick={this.addTodo}></button>

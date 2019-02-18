@@ -3,7 +3,6 @@ import axios from 'axios';
 import './App.css';
 import './fontello/css/fontello.css';
 import AddTodo from './components/AddTodo/script';
-import Header from './components/Header/script';
 import TaskList from './components/TaskList/script';
 
 const url = 'http://localhost:3001/api';
@@ -39,9 +38,12 @@ class App extends Component {
       task: newTask,
       isComplete: false
     };
-    axios.post(`${url}/addTodo`, newTodo).then(() => {
-      this.getTasks();
-    });
+    axios.post(`${url}/addTodo`, newTodo);
+    let fakeID = this.state.todos.length;
+    newTodo._id = fakeID;
+    let todosCopy = this.state.todos;
+    todosCopy.push(newTodo);
+    this.setState({ todos: todosCopy });
   }
 
   deleteTodo = idToDelete => {
