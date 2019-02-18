@@ -16,16 +16,16 @@ class App extends Component {
     // This binding is necessary to make `this` work in the callback
     // this.handleChange = this.handleChange.bind(this);
     this.addNewTodo = this.addNewTodo.bind(this);
-    this.getTasks = this.getTasks.bind(this);
+    this.getTodos = this.getTodos.bind(this);
   }
 
   componentDidMount() {
-    this.getTasks();
+    this.getTodos();
   }
 
   // our first get method that uses our backend api to 
   // fetch data from our data base
-  getTasks = () => {
+  getTodos = () => {
     fetch(`${url}/todos`, {
       crossDomain: true
     })
