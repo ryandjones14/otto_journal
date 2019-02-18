@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
 import './fontello/css/fontello.css';
+import AddTodo from './components/AddTodo/script';
+import Header from './components/Header/script';
+import TaskList from './components/TaskList/script';
 
 const url = 'http://localhost:3001/api';
 class App extends Component {
@@ -24,7 +27,7 @@ class App extends Component {
   // our first get method that uses our backend api to 
   // fetch data from our data base
   getTasks = () => {
-    fetch("http://localhost:3001/api/todos", {
+    fetch(`${url}/todos`, {
       crossDomain: true
     })
       .then(data => data.json())
@@ -48,7 +51,7 @@ class App extends Component {
         objIdToDelete = todo._id;
       }
     });
-    axios.delete("http://localhost:3001/api/deleteTodo", {
+    axios.delete(`${url}/deleteTodo`, {
       data: {
         id: objIdToDelete
       }
@@ -72,7 +75,7 @@ class App extends Component {
       }
     });
 
-    axios.post("http://localhost:3001/api/updateTodo", {
+    axios.post(`${url}/updateTodo`, {
       id: objIdToUpdate,
       update: { isComplete: status }
     }).then(() => {
@@ -89,94 +92,12 @@ class App extends Component {
   render() {
     return (
       <div>
-        <AddTodo placeholder='wut u gon do 2day?' addNewTodo={this.addNewTodo}/>
+        <h1 class="title">otto</h1>
+        <AddTodo placeholder="wut u gon do 2day?" addNewTodo={this.addNewTodo}/>
         <TaskList todos={this.state.todos} deleteTodo={this.deleteTodo} completeTodo={this.completeTodo}/>
       </div>
     );
   }
-}
-
-class AddTodo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      placeholder: props.placeholder,
-      value: '',
-    };
-
-    // This binding is necessary to make `this` work in the callback
-    this.handleChange = this.handleChange.bind(this);
-    this.addTodo = this.addTodo.bind(this);    
-  }
-
-  handleChange(e) {
-    const newValue = e.target.value;
-    this.setState(state => ({
-      value: newValue
-    }));
-  }
-  addTodo() {
-    const newTask = this.state.value;
-    if (newTask === '') return;
-    this.props.addNewTodo(newTask);
-    this.setState(state => ({
-      value: ''
-    }));
-  }
-  render() {
-    return (
-      <div className='add-todo'>
-        <input className='add-todo-input' type='text' placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange}/>
-        <button className='add-todo-btn icon-plus' onClick={this.addTodo}></button>
-      </div>
-    );
-  }
-}
-
-function TaskList(props) {
-  const listTodos = props.todos.map((todo, i) => {
-    return (
-      <li key={todo._id}>
-        <Todo
-          task={todo.task}
-          id={todo._id}
-          isComplete={todo.isComplete}
-          deleteTodo={props.deleteTodo}
-          completeTodo={props.completeTodo}/>
-      </li>
-    );
-  });
-  return (
-    <ul className='todo-list'>{listTodos}</ul>
-  );
-}
-
-function Todo(props) {
-  function deleteTodo(idToDelete) {
-    props.deleteTodo(idToDelete);
-  };
-  function completeTodo(idToUpdate) {
-    props.completeTodo(idToUpdate);
-  };
-  const todoStatus = props.isComplete ? 'complete icon-emo-thumbsup' : 'incomplete';
-  const doneBtnClasses = props.isComplete ? 'done icon-check' : 'done icon-check-empty';
-
-  const deleteBtnClasses = 'delete icon-trash-empty';
-  return (
-    <div className='todo'>
-      <p className={todoStatus}>
-        {props.task}
-      </p>
-      <button
-        className={doneBtnClasses}
-        onClick={() => completeTodo(props.id)}>
-      </button>
-      <button
-        className={deleteBtnClasses}
-        onClick={() => deleteTodo(props.id)}>
-      </button>
-    </div>
-  )
 }
 
 export default App;

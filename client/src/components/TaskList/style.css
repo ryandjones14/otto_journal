@@ -1,0 +1,6 @@
+.todo-list {
+  list-style: none;
+  max-width: 65%;
+  font-size: 16px;
+  color: rgb(0, 41, 0);
+}
