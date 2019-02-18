@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
 html, body {
   background-color: rgb(240, 240, 240);
+  font-family: 'Abel', sans-serif;
 }
