@@ -34,7 +34,7 @@ class AddTodo extends Component {
       <div className="add-todo">
         <h1 className="title">otto</h1>
         <form className="add-todo-form">
-          <input className="add-todo-input" type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange} />
+          <input ref={input => input && input.focus()} className="add-todo-input" type="text" placeholder={this.state.placeholder} value={this.state.value} onChange={this.handleChange} />
           <button type="submit" className="add-todo-btn icon-plus" onClick={this.addTodo}></button>
         </form>
       </div>
