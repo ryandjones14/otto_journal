@@ -92,7 +92,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1 class="title">otto</h1>
         <AddTodo placeholder="wut u gon do 2day?" addNewTodo={this.addNewTodo}/>
         <TaskList todos={this.state.todos} deleteTodo={this.deleteTodo} completeTodo={this.completeTodo}/>
       </div>

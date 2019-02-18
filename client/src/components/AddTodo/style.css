@@ -17,3 +17,10 @@
     border-radius: 5px;    
     background: rgb(200, 200, 200);
   }
+
+.title {
+  background: darkgreen;
+  margin: 0;
+  padding: 10px;
+  color: rgb(240, 240, 240);
+}
